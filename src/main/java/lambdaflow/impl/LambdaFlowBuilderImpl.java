@@ -12,7 +12,7 @@ public class LambdaFlowBuilderImpl<IN, OUT> implements LambdaFlowBuilder<IN, OUT
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> LambdaFlowBuilder<IN, T> addStep(Step<IN, T> step) {
+  public <T> LambdaFlowBuilder<IN, T> addStep(Step<OUT, T> step) {
     steps.add(step);
     return (LambdaFlowBuilderImpl<IN, T>) this;
   }

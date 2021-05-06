@@ -1,7 +1,7 @@
 package lambdaflow;
 
-import java.util.EventObject;
 import java.util.List;
+import java.util.stream.Collectors;
 import lambdaflow.impl.FlowErrorStrategyImpl;
 import lambdaflow.impl.LambdaFlowImpl;
 import lambdaflow.impl.StepBuilderStarter;
@@ -9,18 +9,35 @@ import lambdaflow.impl.StepErrorStrategyImpl;
 
 public class Main {
   public static void main(String[] args) {
+
     var flow =
-        LambdaFlowImpl.builder(EventObject.class)
+        LambdaFlowImpl.builder(String.class)
             .addStep(
-                StepBuilderStarter.<EventObject, String>single()
+                StepBuilderStarter.<String, A>single()
                     .withName("first")
-                    .withMapping(EventObject::toString)
+                    .withMapping(A::new)
                     .withErrorStrategy(StepErrorStrategyImpl.FAIL_FAST)
+                    .build())
+            .addStep(
+                StepBuilderStarter.<A, B>multi()
+                    .withName("second")
+                    .withMapping(Main::secondStepFunction)
+                    .build())
+            .addStep(
+                StepBuilderStarter.<B, Integer>single()
+                    .withName("third")
+                    .withMapping(B::getI)
                     .build())
             .withErrorStrategy(FlowErrorStrategyImpl.FAIL_FAST)
             .build();
 
-    List<EventObject> data = List.of(new EventObject(""));
-    List<String> r = flow.process(data);
+    List<String> in = List.of("ABCD", "1234567");
+    System.out.println(in);
+    List<Integer> out = flow.process(in);
+    System.out.println(out);
+  }
+
+  private static List<B> secondStepFunction(List<A> l) {
+    return l.stream().map(e -> new B(e.getS().length())).collect(Collectors.toList());
   }
 }
