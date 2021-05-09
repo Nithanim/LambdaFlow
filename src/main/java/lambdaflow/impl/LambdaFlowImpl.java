@@ -1,5 +1,6 @@
 package lambdaflow.impl;
 
+import java.util.Collections;
 import java.util.List;
 import lambdaflow.Step;
 import lambdaflow.errorhandling.FlowErrorStrategy;
@@ -18,11 +19,11 @@ public class LambdaFlowImpl<IN, OUT> implements lambdaflow.LambdaFlow<IN, OUT> {
   }
 
   @SuppressWarnings("unchecked")
-  public List<OUT> process(List<IN> input) {
+  public List<OUT> process(List<IN> input) throws Exception {
     Object intermediate = input;
     for (Step<?, ?> step : steps) {
       intermediate = ((Step<Object, ?>) step).process((List<Object>) intermediate);
     }
-    return (List<OUT>) intermediate;
+    return Collections.unmodifiableList((List<OUT>) intermediate);
   }
 }

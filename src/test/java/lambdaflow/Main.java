@@ -8,7 +8,7 @@ import lambdaflow.impl.StepBuilderStarter;
 import lambdaflow.impl.StepErrorStrategyImpl;
 
 public class Main {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
 
     var flow =
         LambdaFlowImpl.builder(String.class)
