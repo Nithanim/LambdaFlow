@@ -26,4 +26,21 @@ public class LambdaFlowImpl<IN, OUT> implements lambdaflow.LambdaFlow<IN, OUT> {
     }
     return Collections.unmodifiableList((List<OUT>) intermediate);
   }
+
+  @Override
+  public void close() throws Exception {
+    Exception firstException = null;
+    for (Step<?, ?> step : steps) {
+      try {
+        step.close();
+      } catch (Exception ex) {
+        if (firstException == null) {
+          firstException = ex;
+        }
+      }
+    }
+    if (firstException != null) {
+      throw firstException;
+    }
+  }
 }

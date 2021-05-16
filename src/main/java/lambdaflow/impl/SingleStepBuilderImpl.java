@@ -13,6 +13,7 @@ public class SingleStepBuilderImpl<IN, OUT> implements SingleStepBuilder<IN, OUT
   private String name;
   private MappingFunction<IN, OUT> mapper;
   private StepErrorStrategy errorStrategy;
+  private int numberThreads = -1;
 
   @Override
   @SuppressWarnings("unchecked")
@@ -35,16 +36,19 @@ public class SingleStepBuilderImpl<IN, OUT> implements SingleStepBuilder<IN, OUT
 
   @Override
   public Step<IN, OUT> build() {
-    return new Step<>() {
-      @Override
-      public List<OUT> process(List<IN> input) throws Exception {
-        log.info("Executing step {}", name);
-        var outs = new ArrayList<OUT>();
-        for (IN in : input) {
-          outs.add(mapper.apply(in));
-        }
-        return outs;
-      }
-    };
+    if (numberThreads == 0) {
+      return this::processSynchronous;
+    } else {
+      return new ParallelSingleStep<>(numberThreads, mapper);
+    }
+  }
+
+  private List<OUT> processSynchronous(List<IN> input) throws Exception {
+    log.info("Executing step {}", name);
+    var outs = new ArrayList<OUT>();
+    for (IN in : input) {
+      outs.add(mapper.apply(in));
+    }
+    return outs;
   }
 }
