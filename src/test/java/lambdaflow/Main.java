@@ -11,7 +11,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     var flow =
-        LambdaFlowImpl.builder(String.class)
+        LambdaFlowImpl.<String>builder()
             .addStep(
                 StepBuilderStarter.<String, A>single()
                     .withName("first")

@@ -14,7 +14,7 @@ public class LambdaFlowImpl<IN, OUT> implements lambdaflow.LambdaFlow<IN, OUT> {
     this.errorStrategy = errorStrategy;
   }
 
-  public static <T> LambdaFlowBuilderImpl<T, T> builder(Class<T> dataClass) {
+  public static <T> LambdaFlowBuilderImpl<T, T> builder() {
     return new LambdaFlowBuilderImpl<>();
   }
 
