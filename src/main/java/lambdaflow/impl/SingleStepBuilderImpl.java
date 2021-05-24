@@ -13,7 +13,7 @@ public class SingleStepBuilderImpl<IN, OUT> implements SingleStepBuilder<IN, OUT
   private String name;
   private MappingFunction<IN, OUT> mapper;
   private StepErrorStrategy errorStrategy;
-  private int numberThreads = -1;
+  private int numberThreads = 0;
 
   @Override
   @SuppressWarnings("unchecked")
