@@ -3,15 +3,15 @@ package lambdaflow;
 import java.util.List;
 import java.util.stream.Collectors;
 import lambdaflow.impl.FlowErrorStrategyImpl;
-import lambdaflow.impl.LambdaFlowImpl;
 import lambdaflow.impl.StepBuilderStarter;
 import lambdaflow.impl.StepErrorStrategyImpl;
+import lambdaflow.impl.waterfall.WaterfallLambdaFlow;
 
 public class Main {
   public static void main(String[] args) throws Exception {
 
     var flow =
-        LambdaFlowImpl.<String>builder()
+        WaterfallLambdaFlow.<String>builder()
             .addStep(
                 StepBuilderStarter.<String, A>single()
                     .withName("first")

@@ -13,13 +13,18 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lambdaflow.MappingFunction;
 import lambdaflow.Step;
+import lombok.extern.slf4j.Slf4j;
 
 /** A simple step implementation that computes the mapping of items in parallel. */
+@Slf4j
 class ParallelSingleStep<IN, OUT> implements Step<IN, OUT> {
+  private final String name;
   private final ExecutorService pool;
   private final MappingFunction<IN, OUT> mappingFunction;
 
-  public ParallelSingleStep(int numberThreads, MappingFunction<IN, OUT> mappingFunction) {
+  public ParallelSingleStep(
+      String name, MappingFunction<IN, OUT> mappingFunction, int numberThreads) {
+    this.name = name;
     this.pool = Executors.newFixedThreadPool(numberThreads);
     this.mappingFunction = mappingFunction;
   }
@@ -32,6 +37,7 @@ class ParallelSingleStep<IN, OUT> implements Step<IN, OUT> {
    */
   @Override
   public List<OUT> process(List<IN> input) throws Exception {
+    log.info("Executing step {}", name);
     CountDownLatch cdl = new CountDownLatch(input.size());
     var firstExceptionHolder = new AtomicReference<Exception>();
 

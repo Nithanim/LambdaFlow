@@ -1,21 +1,21 @@
-package lambdaflow.impl;
+package lambdaflow.impl.waterfall;
 
 import java.util.Collections;
 import java.util.List;
 import lambdaflow.Step;
 import lambdaflow.errorhandling.FlowErrorStrategy;
 
-public class LambdaFlowImpl<IN, OUT> implements lambdaflow.LambdaFlow<IN, OUT> {
+public class WaterfallLambdaFlow<IN, OUT> implements lambdaflow.LambdaFlow<IN, OUT> {
   private final List<Step<?, ?>> steps;
   private final FlowErrorStrategy errorStrategy;
 
-  public LambdaFlowImpl(List<Step<?, ?>> steps, FlowErrorStrategy errorStrategy) {
+  public WaterfallLambdaFlow(List<Step<?, ?>> steps, FlowErrorStrategy errorStrategy) {
     this.steps = steps;
     this.errorStrategy = errorStrategy;
   }
 
-  public static <T> LambdaFlowBuilderImpl<T, T> builder() {
-    return new LambdaFlowBuilderImpl<>();
+  public static <T> WaterfallLambdaFlowBuilder<T, T> builder() {
+    return new WaterfallLambdaFlowBuilder<>();
   }
 
   @SuppressWarnings("unchecked")

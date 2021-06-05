@@ -1,7 +1,5 @@
 package lambdaflow.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import lambdaflow.MappingFunction;
 import lambdaflow.SingleStepBuilder;
 import lambdaflow.Step;
@@ -37,18 +35,9 @@ public class SingleStepBuilderImpl<IN, OUT> implements SingleStepBuilder<IN, OUT
   @Override
   public Step<IN, OUT> build() {
     if (numberThreads == 0) {
-      return this::processSynchronous;
+      return new SingleStep<>(name, mapper);
     } else {
-      return new ParallelSingleStep<>(numberThreads, mapper);
+      return new ParallelSingleStep<>(name, mapper, numberThreads);
     }
-  }
-
-  private List<OUT> processSynchronous(List<IN> input) throws Exception {
-    log.info("Executing step {}", name);
-    var outs = new ArrayList<OUT>();
-    for (IN in : input) {
-      outs.add(mapper.apply(in));
-    }
-    return outs;
   }
 }

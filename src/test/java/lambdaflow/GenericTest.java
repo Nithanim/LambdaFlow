@@ -2,8 +2,8 @@ package lambdaflow;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import lambdaflow.impl.LambdaFlowImpl;
 import lambdaflow.impl.StepBuilderStarter;
+import lambdaflow.impl.waterfall.WaterfallLambdaFlow;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +34,6 @@ public class GenericTest {
   }
 
   private <A, B> LambdaFlow<A, B> singleStepFlow(Step<A, B> step) {
-    return LambdaFlowImpl.<A>builder().addStep(step).build();
+    return WaterfallLambdaFlow.<A>builder().addStep(step).build();
   }
 }
